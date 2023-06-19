@@ -9,5 +9,5 @@ package aprendendo.exerciciochatseguro;
  * @author Suporte
  */
 public class Teste {
-    
+    Teste
 }
