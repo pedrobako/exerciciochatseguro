@@ -42,11 +42,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Component id="jScrollPane1" alignment="1" max="32767" attributes="0"/>
-              <Group type="102" alignment="0" attributes="0">
-                  <Component id="jScrollPane3" min="-2" pref="323" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="botaoEnviar" max="32767" attributes="0"/>
-              </Group>
+              <Component id="painelDH" alignment="0" max="32767" attributes="0"/>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -61,76 +57,77 @@
               </Group>
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="labelIp" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jScrollPane3" min="-2" pref="323" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="labelChave" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="46" max="32767" attributes="0"/>
-                                  <Component id="campoChave" min="-2" pref="166" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="labelRemoto" min="-2" max="-2" attributes="0"/>
-                                      <Component id="labelLocal" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="campoIpLocal" pref="164" max="32767" attributes="0"/>
-                                      <Component id="campoIpRemoto" max="32767" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <Component id="botaoEnviar" max="32767" attributes="0"/>
                       </Group>
-                  </Group>
-                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="botaoAtualizaChave" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
-                                  <Component id="labelPorta" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="123" max="-2" attributes="0"/>
+                                          <Component id="labelIp" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="labelLocal" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="labelRemoto" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="campoIpLocal" pref="161" max="32767" attributes="0"/>
+                                              <Component id="campoIpRemoto" max="32767" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="campoPortaLocal" alignment="0" min="-2" pref="73" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
+                                          <Component id="labelPorta" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="campoPortaRemota" alignment="0" min="-2" pref="73" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="botaoAbrirConexao" max="32767" attributes="0"/>
+                                      <Component id="botaoConectar" alignment="1" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Component id="painelModoOp" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="labelChave" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="labelAlgoritmo" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="radioSDES" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                          <Component id="radioRC4" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
+                                          <Component id="campoChave" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                                  <Component id="botaoAtualizaChave" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="campoPortaLocal" min="-2" pref="73" max="-2" attributes="0"/>
+                                  <Component id="labelModoOp" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                                  <Component id="radioECB" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="botaoAbrirConexao" min="-2" max="-2" attributes="0"/>
+                                  <Component id="radioCBC" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="campoPortaRemota" min="-2" pref="73" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="botaoConectar" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-              </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="labelAlgoritmo" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="radioSDES" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="radioRC4" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="painelModoOp" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -138,65 +135,64 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="labelNomeUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="labelUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="216" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="174" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane3" min="-2" pref="55" max="-2" attributes="0"/>
                       <Component id="botaoEnviar" min="-2" pref="43" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="labelIp" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="labelRemoto" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <Component id="labelLocal" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="campoIpLocal" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                                  <Component id="campoIpRemoto" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="labelPorta" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="campoPortaLocal" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="botaoAbrirConexao" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="campoPortaRemota" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="botaoConectar" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="labelIp" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelPorta" alignment="1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="labelLocal" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="campoIpLocal" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="campoPortaLocal" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="botaoAbrirConexao" alignment="1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="labelRemoto" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="campoIpRemoto" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                          <Component id="campoPortaRemota" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="botaoConectar" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="labelAlgoritmo" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="radioSDES" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="radioRC4" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="campoChave" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="labelChave" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="botaoAtualizaChave" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                          <Component id="labelModoOp" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                          <Component id="radioECB" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="radioCBC" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="painelDH" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="81" max="32767" attributes="0"/>
                   <Component id="painelModoOp" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="202" max="32767" attributes="0"/>
               </Group>
@@ -348,54 +344,226 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="labelModoOp" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                      <Component id="radioECB" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="radioCBC" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="202" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
+        <Component class="javax.swing.JLabel" name="labelModoOp">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Modo de opera&#xe7;&#xe3;o:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="radioECB">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ECB"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioECBActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="radioCBC">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="CBC"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioCBCActionPerformed"/>
+          </Events>
+        </Component>
+        <Container class="javax.swing.JPanel" name="painelDH">
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="labelPartidaPrimo" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                      <Component id="textFieldPontoPartida" min="-2" pref="75" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="botaoGerarPrimo" min="-2" pref="115" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <Component id="labelPrimoGerado" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                                              <Component id="textFieldPrimoGerado" min="-2" pref="75" max="-2" attributes="0"/>
+                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              <Component id="labelRaizes" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="labelChaveSessao" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              <Component id="textFieldChaveSessao" min="-2" pref="184" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="labelRaizSelecionada" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="textFieldChavePub" pref="75" max="32767" attributes="0"/>
+                                          <Component id="textFieldRaizSelecionada" alignment="1" max="32767" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace pref="41" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <Component id="lebelSelecionaChavePriv" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="textFieldChavePriv" min="-2" pref="75" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="botaoGerarChavePubDH" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                              <Component id="labelModoOp" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="labelPartidaPrimo" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="radioECB" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="radioCBC" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="textFieldPontoPartida" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="botaoGerarPrimo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="79" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="labelPrimoGerado" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldPrimoGerado" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelRaizes" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="64" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelRaizSelecionada" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldRaizSelecionada" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lebelSelecionaChavePriv" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldChavePriv" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="botaoGerarChavePubDH" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                              <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="textFieldChavePub" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelChaveSessao" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldChaveSessao" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="16" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="labelModoOp">
+            <Component class="javax.swing.JLabel" name="labelPartidaPrimo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Modo de opera&#xe7;&#xe3;o:"/>
+                <Property name="text" type="java.lang.String" value="Digite um ponto de partida para gerar um primo:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JRadioButton" name="radioECB">
+            <Component class="javax.swing.JTextField" name="textFieldPontoPartida">
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelRaizes">
               <Properties>
-                <Property name="text" type="java.lang.String" value="ECB"/>
+                <Property name="text" type="java.lang.String" value="Ra&#xed;zes primitivas:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="botaoGerarPrimo">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Gerar primo"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioECBActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoGerarPrimoActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JRadioButton" name="radioCBC">
+            <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTextArea" name="textAreaRaizes">
+                  <Properties>
+                    <Property name="columns" type="int" value="20"/>
+                    <Property name="rows" type="int" value="5"/>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="textAreaRaizes.setLineWrap(true);&#xd;&#xa;jScrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);&#xd;&#xa;jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);"/>
+                  </AuxValues>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JLabel" name="labelPrimoGerado">
               <Properties>
-                <Property name="text" type="java.lang.String" value="CBC"/>
+                <Property name="text" type="java.lang.String" value="Primo selecionado:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="textFieldPrimoGerado">
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelRaizSelecionada">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Selecione uma ra&#xed;z:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="textFieldRaizSelecionada">
+            </Component>
+            <Component class="javax.swing.JLabel" name="lebelSelecionaChavePriv">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Selecione uma chave privada (&lt; primo):"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="textFieldChavePriv">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldChavePrivActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Chave P&#xfa;blica:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="textFieldChavePub">
+            </Component>
+            <Component class="javax.swing.JLabel" name="labelChaveSessao">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Chave de sess&#xe3;o:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="textFieldChaveSessao">
+            </Component>
+            <Component class="javax.swing.JButton" name="botaoGerarChavePubDH">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Gerar chave Pub"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioCBCActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botaoGerarChavePubDHActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

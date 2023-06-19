@@ -3,20 +3,77 @@ import java.util.*;
 import java.math.*;
 
 public class DiffieHellman {
+    private int chavePub;
+    private int chavePriv;
+    private int chaveSessao;
+    private int alfa;
+    private int primo;
+
+    public void setChavePriv(int chavePriv) {
+        this.chavePriv = chavePriv;
+    }
+
+    public void setChavePub(int chavePub) {
+        this.chavePub = chavePub;
+    }
+
+    public void setChaveSessao(int chaveSessao) {
+        this.chaveSessao = chaveSessao;
+    }
+
+    public void setAlfa(int alfa) {
+        this.alfa = alfa;
+    }
+
+    public void setPrimo(int primo) {
+        this.primo = primo;
+    }
+
+    public int getAlfa() {
+        return alfa;
+    }
+
+    public int getPrimo() {
+        return primo;
+    }
+
+    public int getChavePriv() {
+        return chavePriv;
+    }
+
+    public int getChavePub() {
+        return chavePub;
+    }
+
+    public int getChaveSessao() {
+        return chaveSessao;
+    }
     
+    public int geraChavePublica(){
+        BigInteger alfaBig = BigInteger.valueOf(this.alfa);
+        BigInteger primoBig = BigInteger.valueOf(this.primo);
+        BigInteger chavePubBig = (alfaBig.pow(this.chavePriv)).mod(primoBig);
+        this.chavePub = chavePubBig.intValue();
+        
+        return this.chavePub;
+    }
+
     public int geraPrimo(int pontoPartida){
         int candidato = pontoPartida;
         while(true){
-            if (verificaPrimo(candidato))
-                return candidato;
+            if (verificaPrimo(candidato)){
+                this.primo = candidato;
+                return this.primo;
+            }
             else
                 candidato++;
         }
     }
     
-    public List<BigInteger> geraRaizesPrimitivaNrPrimo(BigInteger primo){
+    public List<BigInteger> geraRaizesPrimitivaNrPrimo(){
+        BigInteger primoBig = new BigInteger(String.valueOf(this.primo));
         List<BigInteger> raizesPrimitivas = new ArrayList();
-        if (verificaPrimo(primo.intValue())) {
+        if (verificaPrimo(this.primo)) {
             BigInteger aux;
             List<BigInteger> restos = new ArrayList();
             BigInteger raizCandidata = BigInteger.valueOf(2);
@@ -24,15 +81,15 @@ public class DiffieHellman {
             //Enquanto o valor candidato a raiz primitiva (mod primo)
             //for menor que o número primo
             //continuo testando se é raíz primitiva (mod primo)
-            while (raizCandidata.compareTo(primo) < 0) {
-                for (int k = 1; k < primo.intValue(); k++) {
-                    aux = (raizCandidata.pow(k)).mod(primo);
+            while (raizCandidata.compareTo(primoBig) < 0) {
+                for (int k = 1; k < this.primo; k++) {
+                    aux = (raizCandidata.pow(k)).mod(primoBig);
                     if (aux == BigInteger.ONE || restos.contains(aux)) {
                         break;
                     }
                     restos.add(aux);
                 }
-                if (restos.size() == primo.intValue() - 1) {
+                if (restos.size() == (this.primo - 1)) {
                     raizesPrimitivas.add(raizCandidata);
                 }
                 //Atualizo a candidata a raíz primitiva

@@ -7,17 +7,6 @@ import java.math.*;
 public class Chat {
 
     public static void main(String[] args) throws UnknownHostException{        
-        /*
-        DiffieHellman dh = new DiffieHellman();
-        int primo = dh.geraPrimo(37);
-        List<BigInteger> raizesPrimitivas = dh.geraRaizesPrimitivaNrPrimo(BigInteger.valueOf(primo));
-        Collections.sort(raizesPrimitivas);
-        System.out.println("Primo: " + primo + " Raízes primitivas: ");
-        for (var i : raizesPrimitivas)
-            System.out.print(i + " ");
-        
-        */
-        
         int intPorta=0, portaFinal=0, intPos=0, posFinal=0;
         String nomeUsuario = "default";
 		char idArg;
@@ -62,6 +51,5 @@ public class Chat {
         chatTeste = new ChatBox("Usuario de teste", 3002);
         chatTeste.setLocation(800, 0);
         chatTeste.setVisible(true);
-
     }
 }

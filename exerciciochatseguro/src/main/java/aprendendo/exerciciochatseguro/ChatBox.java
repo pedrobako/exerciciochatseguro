@@ -7,10 +7,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +23,7 @@ public class ChatBox extends javax.swing.JFrame {
 
     public ChatBox(String nomeUsuario, int portaLocal) throws UnknownHostException{
         initComponents();
+        this.dh = new DiffieHellman();
         this.criptoSDES = new SDES("0000000001");
         this.criptoRC4 = new RC4("0000000001");
         this.criptoSetado = (Cripto) this.criptoSDES;
@@ -44,6 +48,10 @@ public class ChatBox extends javax.swing.JFrame {
         this.textAreaChat.setEditable(false);
         this.campoIpLocal.setEditable(false);
         this.painelModoOp.setVisible(true);
+        this.textAreaRaizes.setEditable(false);
+        this.textFieldPrimoGerado.setEditable(false);
+        this.textFieldChavePub.setEditable(false);
+        this.textFieldChaveSessao.setEditable(false);
     }
     
     private void initClient(String host, int porta){
@@ -112,6 +120,24 @@ public class ChatBox extends javax.swing.JFrame {
         labelModoOp = new javax.swing.JLabel();
         radioECB = new javax.swing.JRadioButton();
         radioCBC = new javax.swing.JRadioButton();
+        painelDH = new javax.swing.JPanel();
+        labelPartidaPrimo = new javax.swing.JLabel();
+        textFieldPontoPartida = new javax.swing.JTextField();
+        labelRaizes = new javax.swing.JLabel();
+        botaoGerarPrimo = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textAreaRaizes = new javax.swing.JTextArea();
+        labelPrimoGerado = new javax.swing.JLabel();
+        textFieldPrimoGerado = new javax.swing.JTextField();
+        labelRaizSelecionada = new javax.swing.JLabel();
+        textFieldRaizSelecionada = new javax.swing.JTextField();
+        lebelSelecionaChavePriv = new javax.swing.JLabel();
+        textFieldChavePriv = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        textFieldChavePub = new javax.swing.JTextField();
+        labelChaveSessao = new javax.swing.JLabel();
+        textFieldChaveSessao = new javax.swing.JTextField();
+        botaoGerarChavePubDH = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -189,6 +215,17 @@ public class ChatBox extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout painelModoOpLayout = new javax.swing.GroupLayout(painelModoOp);
+        painelModoOp.setLayout(painelModoOpLayout);
+        painelModoOpLayout.setHorizontalGroup(
+            painelModoOpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        painelModoOpLayout.setVerticalGroup(
+            painelModoOpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 202, Short.MAX_VALUE)
+        );
+
         labelModoOp.setText("Modo de operação:");
 
         radioECB.setText("ECB");
@@ -205,29 +242,126 @@ public class ChatBox extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout painelModoOpLayout = new javax.swing.GroupLayout(painelModoOp);
-        painelModoOp.setLayout(painelModoOpLayout);
-        painelModoOpLayout.setHorizontalGroup(
-            painelModoOpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelModoOpLayout.createSequentialGroup()
-                .addComponent(labelModoOp)
-                .addGap(50, 50, 50)
-                .addComponent(radioECB)
-                .addGap(18, 18, 18)
-                .addComponent(radioCBC)
-                .addGap(0, 0, Short.MAX_VALUE))
+        labelPartidaPrimo.setText("Digite um ponto de partida para gerar um primo:");
+
+        labelRaizes.setText("Raízes primitivas:");
+
+        botaoGerarPrimo.setText("Gerar primo");
+        botaoGerarPrimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoGerarPrimoActionPerformed(evt);
+            }
+        });
+
+        textAreaRaizes.setColumns(20);
+        textAreaRaizes.setRows(5);
+        textAreaRaizes.setLineWrap(true);
+        jScrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane2.setViewportView(textAreaRaizes);
+
+        labelPrimoGerado.setText("Primo selecionado:");
+
+        labelRaizSelecionada.setText("Selecione uma raíz:");
+
+        lebelSelecionaChavePriv.setText("Selecione uma chave privada (< primo):");
+
+        textFieldChavePriv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldChavePrivActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Chave Pública:");
+
+        labelChaveSessao.setText("Chave de sessão:");
+
+        botaoGerarChavePubDH.setText("Gerar chave Pub");
+        botaoGerarChavePubDH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoGerarChavePubDHActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout painelDHLayout = new javax.swing.GroupLayout(painelDH);
+        painelDH.setLayout(painelDHLayout);
+        painelDHLayout.setHorizontalGroup(
+            painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelDHLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(painelDHLayout.createSequentialGroup()
+                        .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(painelDHLayout.createSequentialGroup()
+                                .addComponent(labelPartidaPrimo)
+                                .addGap(12, 12, 12)
+                                .addComponent(textFieldPontoPartida, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(botaoGerarPrimo, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(painelDHLayout.createSequentialGroup()
+                                .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(painelDHLayout.createSequentialGroup()
+                                        .addComponent(labelPrimoGerado)
+                                        .addGap(38, 38, 38)
+                                        .addComponent(textFieldPrimoGerado, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(labelRaizes))
+                                    .addGroup(painelDHLayout.createSequentialGroup()
+                                        .addComponent(labelChaveSessao)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(textFieldChaveSessao, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(painelDHLayout.createSequentialGroup()
+                                .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelRaizSelecionada)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(textFieldChavePub, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                                    .addComponent(textFieldRaizSelecionada))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                                .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelDHLayout.createSequentialGroup()
+                                        .addComponent(lebelSelecionaChavePriv)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(textFieldChavePriv, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(botaoGerarChavePubDH, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addContainerGap())))
         );
-        painelModoOpLayout.setVerticalGroup(
-            painelModoOpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(painelModoOpLayout.createSequentialGroup()
-                .addGroup(painelModoOpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(painelModoOpLayout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(labelModoOp))
-                    .addGroup(painelModoOpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(radioECB)
-                        .addComponent(radioCBC)))
-                .addGap(0, 79, Short.MAX_VALUE))
+        painelDHLayout.setVerticalGroup(
+            painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelDHLayout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelPartidaPrimo)
+                    .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textFieldPontoPartida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botaoGerarPrimo)))
+                .addGap(6, 6, 6)
+                .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelPrimoGerado)
+                    .addComponent(textFieldPrimoGerado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelRaizes))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelRaizSelecionada)
+                    .addComponent(textFieldRaizSelecionada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lebelSelecionaChavePriv)
+                    .addComponent(textFieldChavePriv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botaoGerarChavePubDH)
+                    .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(textFieldChavePub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(5, 5, 5)
+                .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelChaveSessao)
+                    .addComponent(textFieldChaveSessao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -235,10 +369,7 @@ public class ChatBox extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(botaoEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(painelDH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,108 +382,110 @@ public class ChatBox extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(labelIp)
-                        .addGap(63, 63, 63))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(labelChave)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                                .addComponent(campoChave, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(labelRemoto)
-                                    .addComponent(labelLocal))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(campoIpLocal, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                                    .addComponent(campoIpRemoto))
-                                .addGap(3, 3, 3)))))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(botaoAtualizaChave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botaoEnviar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(labelPorta))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(campoPortaLocal, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(123, 123, 123)
+                                        .addComponent(labelIp))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(labelLocal)
+                                            .addComponent(labelRemoto))
+                                        .addGap(39, 39, 39)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(campoIpLocal, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                                            .addComponent(campoIpRemoto))))
                                 .addGap(18, 18, 18)
-                                .addComponent(botaoAbrirConexao)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(campoPortaRemota, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(botaoConectar)
-                        .addGap(16, 16, 16)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(campoPortaLocal, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(21, 21, 21)
+                                        .addComponent(labelPorta))
+                                    .addComponent(campoPortaRemota, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(botaoAbrirConexao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(botaoConectar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(painelModoOp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelChave)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(labelAlgoritmo)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(radioSDES)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(radioRC4))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(84, 84, 84)
+                                        .addComponent(campoChave)))
+                                .addGap(19, 19, 19)
+                                .addComponent(botaoAtualizaChave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(labelModoOp)
+                                .addGap(50, 50, 50)
+                                .addComponent(radioECB)
+                                .addGap(18, 18, 18)
+                                .addComponent(radioCBC)))))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(labelAlgoritmo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(radioSDES)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(radioRC4)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(painelModoOp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelNomeUsuario)
                     .addComponent(labelUsuario))
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botaoEnviar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(labelIp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(labelRemoto)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(labelLocal)
-                                    .addGap(45, 45, 45)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(campoIpLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(20, 20, 20)
-                                .addComponent(campoIpRemoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(labelPorta)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(campoPortaLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(botaoAbrirConexao))
-                        .addGap(19, 19, 19)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(campoPortaRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(botaoConectar))))
-                .addGap(33, 33, 33)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelIp, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(labelPorta, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelLocal, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(campoIpLocal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoPortaLocal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botaoAbrirConexao, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(7, 7, 7)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelRemoto, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(campoIpRemoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(campoPortaRemota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(botaoConectar)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelAlgoritmo)
                     .addComponent(radioSDES)
                     .addComponent(radioRC4))
-                .addGap(14, 14, 14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(campoChave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelChave)
                     .addComponent(botaoAtualizaChave))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(labelModoOp))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(radioECB)
+                        .addComponent(radioCBC)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(painelDH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                 .addComponent(painelModoOp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(202, Short.MAX_VALUE))
         );
@@ -410,12 +543,6 @@ public class ChatBox extends javax.swing.JFrame {
 
     private void botaoAtualizaChaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAtualizaChaveActionPerformed
 
-        if (this.radioSDES.getSelectedObjects() != null){
-            
-        }
-        else if (this.radioRC4.getSelectedObjects() != null){
-            
-        }
         this.criptoSetado.setChave(campoChave.getText());
     }//GEN-LAST:event_botaoAtualizaChaveActionPerformed
 
@@ -449,29 +576,65 @@ public class ChatBox extends javax.swing.JFrame {
         this.modoOpSetado = (ModoOperacao)this.modoCBC;
     }//GEN-LAST:event_radioCBCActionPerformed
 
+    private void botaoGerarPrimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoGerarPrimoActionPerformed
+        // TODO add your handling code here:
+        int pontoPartida = Integer.parseInt(this.textFieldPontoPartida.getText());
+        int primo = this.dh.geraPrimo(pontoPartida);
+        List<BigInteger> raizesPrimitivas = this.dh.geraRaizesPrimitivaNrPrimo();
+        Collections.sort(raizesPrimitivas);
+        this.textFieldPrimoGerado.setText(String.valueOf(primo));
+        for (var i : raizesPrimitivas){
+            this.textAreaRaizes.append(i + " ");
+        }
+    }//GEN-LAST:event_botaoGerarPrimoActionPerformed
+
+    private void textFieldChavePrivActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldChavePrivActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textFieldChavePrivActionPerformed
+
+    private void botaoGerarChavePubDHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoGerarChavePubDHActionPerformed
+        // TODO add your handling code here:
+        int raizSelecionada = Integer.parseInt(this.textFieldRaizSelecionada.getText());
+        this.dh.setAlfa(raizSelecionada);
+        this.dh.setChavePriv(Integer.parseInt(this.textFieldChavePriv.getText()));
+        int chavePub = this.dh.geraChavePublica();
+        this.textFieldChavePub.setText(Integer.toString(chavePub));
+    }//GEN-LAST:event_botaoGerarChavePubDHActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoAbrirConexao;
     private javax.swing.JButton botaoAtualizaChave;
     private javax.swing.JButton botaoConectar;
     private javax.swing.JButton botaoEnviar;
+    private javax.swing.JButton botaoGerarChavePubDH;
+    private javax.swing.JButton botaoGerarPrimo;
     private javax.swing.JTextField campoChave;
     private javax.swing.JTextField campoIpLocal;
     private javax.swing.JTextField campoIpRemoto;
     private javax.swing.JTextField campoPortaLocal;
     private javax.swing.JTextField campoPortaRemota;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel labelAlgoritmo;
     private javax.swing.JLabel labelChave;
+    private javax.swing.JLabel labelChaveSessao;
     private javax.swing.JLabel labelIp;
     private javax.swing.JLabel labelLocal;
     private javax.swing.JLabel labelModoOp;
     private javax.swing.JLabel labelNomeUsuario;
+    private javax.swing.JLabel labelPartidaPrimo;
     private javax.swing.JLabel labelPorta;
+    private javax.swing.JLabel labelPrimoGerado;
+    private javax.swing.JLabel labelRaizSelecionada;
+    private javax.swing.JLabel labelRaizes;
     private javax.swing.JLabel labelRemoto;
     private javax.swing.JLabel labelUsuario;
+    private javax.swing.JLabel lebelSelecionaChavePriv;
+    private javax.swing.JPanel painelDH;
     private javax.swing.JPanel painelModoOp;
     private javax.swing.JRadioButton radioCBC;
     private javax.swing.JRadioButton radioECB;
@@ -479,6 +642,13 @@ public class ChatBox extends javax.swing.JFrame {
     private javax.swing.JRadioButton radioSDES;
     public javax.swing.JTextArea textAreaChat;
     private javax.swing.JTextArea textAreaMsg;
+    private javax.swing.JTextArea textAreaRaizes;
+    private javax.swing.JTextField textFieldChavePriv;
+    private javax.swing.JTextField textFieldChavePub;
+    private javax.swing.JTextField textFieldChaveSessao;
+    private javax.swing.JTextField textFieldPontoPartida;
+    private javax.swing.JTextField textFieldPrimoGerado;
+    private javax.swing.JTextField textFieldRaizSelecionada;
     // End of variables declaration//GEN-END:variables
     private ButtonGroup radioGroupCripto;
     private SDES criptoSDES;
@@ -489,6 +659,7 @@ public class ChatBox extends javax.swing.JFrame {
     private ECB modoECB;
     private CBC modoCBC;
     private ModoOperacao modoOpSetado;
+    private DiffieHellman dh;
     
     public void insereMsgChat(byte byteMsg){
         String msg = new String();
