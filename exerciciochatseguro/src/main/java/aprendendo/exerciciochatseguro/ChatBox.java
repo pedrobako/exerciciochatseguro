@@ -1,6 +1,8 @@
 package aprendendo.exerciciochatseguro;
 import java.awt.Font;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -64,26 +66,51 @@ public class ChatBox extends javax.swing.JFrame {
     
     @SuppressWarnings("empty-statement")
     private void initServer(int porta) throws ClassNotFoundException, IOException{
-        byte[] data;
         byte byteLido;
-        ServerSocket server;
-        Socket socketSwervidor;
+        ServerSocket server = null;
+        Socket socketServidor = null;
         InputStream inputStream = null;
         try {
             server = new ServerSocket(porta); 
             System.out.println("Servidor iniciado no IP: " + InetAddress.getLocalHost().getHostAddress() +
                                " Porta: " + porta);
-            socketSwervidor = server.accept();
-            System.out.println("Cliente conectado do IP "+socketSwervidor.getInetAddress().getHostAddress());
-            inputStream = socketSwervidor.getInputStream();
+            socketServidor = server.accept();
+            System.out.println("Cliente conectado do IP "+socketServidor.getInetAddress().getHostAddress());
+            inputStream = socketServidor.getInputStream();
+            
+            int chavePublicaRemota;
+            try (DataInputStream dataInputStream = new DataInputStream(inputStream)) {
+                chavePublicaRemota = dataInputStream.readInt();
+                
+                dh.setChavePublicaRemota(chavePublicaRemota);
+                int chaveSessao = dh.getChaveSessao();
+                this.textAreaChat.append(Integer.toString(chaveSessao));
+                
+                chavePublicaRemota = dataInputStream.readInt();
+                while (chavePublicaRemota < 0) {
+                    //Aguarda próxima entrada
+                }
+                
+                
+                while(true){
+                byteLido = (byte) inputStream.read();
+            
+                insereMsgChat(modoOpSetado.recebeMensagem(byteLido, criptoSetado));
+            }
+            }
         }
         catch (IOException ex) {
             Logger.getLogger(ChatBox.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        while(true){
-            byteLido = (byte) inputStream.read();
-            
-            insereMsgChat(modoOpSetado.recebeMensagem(byteLido, criptoSetado));
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (socketServidor != null) {
+                socketServidor.close();
+            }
+            if (server != null) {
+                server.close();
+            }
         }
     }
 
@@ -550,6 +577,22 @@ public class ChatBox extends javax.swing.JFrame {
         String host = this.campoIpRemoto.getText();
         int porta = Integer.parseInt(this.campoPortaRemota.getText());
         initClient(host, porta);
+        OutputStream saida = null;
+        try {
+            saida = cliente.getOutputStream();
+        } catch (IOException ex) {
+            Logger.getLogger(ChatBox.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            try (DataOutputStream dataOutputStream = new DataOutputStream(saida)) {
+                dataOutputStream.writeInt(dh.geraChavePublicaLocal());
+                dataOutputStream.flush();
+                dataOutputStream.writeInt(-1);
+                //dataOutputStream.close();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ChatBox.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_botaoConectarActionPerformed
 
     private void botaoAbrirConexaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAbrirConexaoActionPerformed
@@ -597,7 +640,7 @@ public class ChatBox extends javax.swing.JFrame {
         int raizSelecionada = Integer.parseInt(this.textFieldRaizSelecionada.getText());
         this.dh.setAlfa(raizSelecionada);
         this.dh.setChavePriv(Integer.parseInt(this.textFieldChavePriv.getText()));
-        int chavePub = this.dh.geraChavePublica();
+        int chavePub = this.dh.geraChavePublicaLocal();
         this.textFieldChavePub.setText(Integer.toString(chavePub));
     }//GEN-LAST:event_botaoGerarChavePubDHActionPerformed
 

@@ -3,22 +3,31 @@ import java.util.*;
 import java.math.*;
 
 public class DiffieHellman {
-    private int chavePub;
+    private int chavePubLocal;
     private int chavePriv;
     private int chaveSessao;
     private int alfa;
     private int primo;
+    private int chavePublicaRemota;
 
     public void setChavePriv(int chavePriv) {
         this.chavePriv = chavePriv;
     }
 
-    public void setChavePub(int chavePub) {
-        this.chavePub = chavePub;
+    public void setChavePubLocal(int chavePub) {
+        this.chavePubLocal = chavePub;
+    }
+    
+    public void setChavePublicaRemota(int chavePub){
+        this.chavePublicaRemota = chavePub;
+        calculaChaveSessao();
     }
 
-    public void setChaveSessao(int chaveSessao) {
-        this.chaveSessao = chaveSessao;
+    private void calculaChaveSessao() {
+        BigInteger bigChavePubRemota = BigInteger.valueOf(this.chavePublicaRemota);
+        BigInteger bigPrimo = BigInteger.valueOf(this.primo);
+        BigInteger bigChaveSessao = (bigChavePubRemota.pow(this.chavePriv)).mod(bigPrimo);
+        this.chaveSessao = bigChaveSessao.intValue();
     }
 
     public void setAlfa(int alfa) {
@@ -41,21 +50,22 @@ public class DiffieHellman {
         return chavePriv;
     }
 
-    public int getChavePub() {
-        return chavePub;
+    public int getChavePubLocal() {
+        return chavePubLocal;
     }
 
     public int getChaveSessao() {
         return chaveSessao;
     }
     
-    public int geraChavePublica(){
+    public int geraChavePublicaLocal(){
         BigInteger alfaBig = BigInteger.valueOf(this.alfa);
         BigInteger primoBig = BigInteger.valueOf(this.primo);
+        System.out.println("Alfa: " + alfaBig + " Primo: " + primoBig + " Chave Priv: " + this.chavePriv);
         BigInteger chavePubBig = (alfaBig.pow(this.chavePriv)).mod(primoBig);
-        this.chavePub = chavePubBig.intValue();
+        this.chavePubLocal = chavePubBig.intValue();
         
-        return this.chavePub;
+        return this.chavePubLocal;
     }
 
     public int geraPrimo(int pontoPartida){
