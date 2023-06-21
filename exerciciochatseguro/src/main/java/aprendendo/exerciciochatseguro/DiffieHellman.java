@@ -1,6 +1,9 @@
 package aprendendo.exerciciochatseguro;
+import java.io.*;
 import java.util.*;
 import java.math.*;
+import java.net.*;
+import java.util.logging.*;
 
 public class DiffieHellman {
     private int chavePubLocal;
@@ -9,6 +12,83 @@ public class DiffieHellman {
     private int alfa;
     private int primo;
     private int chavePublicaRemota;
+    private final int portaParaConexao;
+    
+    public DiffieHellman(){
+        this.chavePubLocal = -1;
+        this.chavePriv = -1;
+        this.chaveSessao = -1;//Chave de sessão não estabelecida
+        this.alfa = -1;
+        this.primo = -1;
+        this.chavePublicaRemota = -1;
+        this.portaParaConexao = 8000;
+    }
+    
+    public boolean prontoParaHandShake(){
+        return ((this.alfa > 0)&&(this.primo > 0)&&(this.chavePubLocal > 0));
+    }
+    
+    public boolean chaveDeSessaoEstabelecida(){
+        return this.chaveSessao > 0;
+    }
+    
+    public void abrirConexao() throws IOException{
+        byte byteLido;
+        ServerSocket server = null;
+        Socket socketServidor = null;
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        try {
+            server = new ServerSocket(this.portaParaConexao);
+            socketServidor = server.accept();
+            inputStream = socketServidor.getInputStream();
+            outputStream = socketServidor.getOutputStream();
+            
+            DataInputStream dataInputStream = new DataInputStream(inputStream);
+            this.chavePublicaRemota = dataInputStream.readInt();
+            this.primo = dataInputStream.readInt();
+            this.alfa = dataInputStream.readInt();
+            this.chavePriv = (12345)%this.primo;
+            
+            geraChavePublicaLocal();
+            calculaChaveSessao();
+            
+            DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+            dataOutputStream.writeInt(this.chavePubLocal);
+        }
+        catch (IOException ex) {
+            Logger.getLogger(ChatBox.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (socketServidor != null) {
+                socketServidor.close();
+            }
+            if (server != null) {
+                server.close();
+            }
+        }
+    }
+    
+    public void handShake(String host){
+        try {
+            Socket socket = new Socket(host, this.portaParaConexao);
+            OutputStream outputStream = socket.getOutputStream();
+            DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+            dataOutputStream.writeInt(this.chavePubLocal);
+            dataOutputStream.writeInt(this.primo);
+            dataOutputStream.writeInt(this.alfa);
+            
+            InputStream inputStream = socket.getInputStream();
+            DataInputStream dataInputStream = new DataInputStream(inputStream);
+            this.chavePublicaRemota = dataInputStream.readInt();
+            calculaChaveSessao();
+        } catch (IOException ex) {
+            Logger.getLogger(DiffieHellman.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 
     public void setChavePriv(int chavePriv) {
         this.chavePriv = chavePriv;

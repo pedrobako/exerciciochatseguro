@@ -58,7 +58,7 @@ public class ChatBox extends javax.swing.JFrame {
     
     private void initClient(String host, int porta){
         try {
-            cliente = new Socket(host,porta);
+            this.cliente = new Socket(host,porta);
         } catch (IOException ex) {
             Logger.getLogger(ChatBox.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -77,26 +77,11 @@ public class ChatBox extends javax.swing.JFrame {
             socketServidor = server.accept();
             System.out.println("Cliente conectado do IP "+socketServidor.getInetAddress().getHostAddress());
             inputStream = socketServidor.getInputStream();
-            
-            int chavePublicaRemota;
-            try (DataInputStream dataInputStream = new DataInputStream(inputStream)) {
-                chavePublicaRemota = dataInputStream.readInt();
-                
-                dh.setChavePublicaRemota(chavePublicaRemota);
-                int chaveSessao = dh.getChaveSessao();
-                this.textAreaChat.append(Integer.toString(chaveSessao));
-                
-                chavePublicaRemota = dataInputStream.readInt();
-                while (chavePublicaRemota < 0) {
-                    //Aguarda próxima entrada
-                }
-                
-                
-                while(true){
+
+            while(true){
                 byteLido = (byte) inputStream.read();
-            
+
                 insereMsgChat(modoOpSetado.recebeMensagem(byteLido, criptoSetado));
-            }
             }
         }
         catch (IOException ex) {
@@ -379,11 +364,11 @@ public class ChatBox extends javax.swing.JFrame {
                     .addComponent(lebelSelecionaChavePriv)
                     .addComponent(textFieldChavePriv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botaoGerarChavePubDH)
+                .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
-                        .addComponent(textFieldChavePub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(textFieldChavePub, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(botaoGerarChavePubDH))
                 .addGap(5, 5, 5)
                 .addGroup(painelDHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelChaveSessao)
@@ -577,22 +562,31 @@ public class ChatBox extends javax.swing.JFrame {
         String host = this.campoIpRemoto.getText();
         int porta = Integer.parseInt(this.campoPortaRemota.getText());
         initClient(host, porta);
-        OutputStream saida = null;
-        try {
-            saida = cliente.getOutputStream();
-        } catch (IOException ex) {
-            Logger.getLogger(ChatBox.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            try (DataOutputStream dataOutputStream = new DataOutputStream(saida)) {
-                dataOutputStream.writeInt(dh.geraChavePublicaLocal());
-                dataOutputStream.flush();
-                dataOutputStream.writeInt(-1);
-                //dataOutputStream.close();
+        if ((dh.prontoParaHandShake())&&(!dh.chaveDeSessaoEstabelecida())){
+            Thread handShakeDh = new Thread(){
+                @Override
+                public void run(){
+                    dh.handShake(host);
+                }
+            };
+            try {
+                handShakeDh.start();
+                handShakeDh.join();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ChatBox.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-            Logger.getLogger(ChatBox.class.getName()).log(Level.SEVERE, null, ex);
+            int chaveSessao = dh.getChaveSessao();
+            this.textFieldChaveSessao.setText(Integer.toString(chaveSessao));
+            this.textFieldChaveSessao.setEditable(false);
+            this.textFieldPontoPartida.setText("");
+            this.textFieldPontoPartida.setEditable(false);
+            this.textFieldRaizSelecionada.setEditable(false);
+            this.textFieldChavePriv.setEditable(false);
+            this.textAreaRaizes.setText("");
+            this.textAreaRaizes.setEditable(false);
         }
+        else if (!dh.chaveDeSessaoEstabelecida())
+            System.out.println("Faltou estabelecer o primo, o alfa ou a chave pública local");
     }//GEN-LAST:event_botaoConectarActionPerformed
 
     private void botaoAbrirConexaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAbrirConexaoActionPerformed
@@ -607,6 +601,22 @@ public class ChatBox extends javax.swing.JFrame {
                 }
             }
         }.start();
+        if (!dh.chaveDeSessaoEstabelecida()){
+            Thread abrirConexaoDh = new Thread(){
+                @Override
+                public void run(){
+                    try {
+                        dh.abrirConexao();
+                    } catch (IOException ex) {
+                        Logger.getLogger(ChatBox.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            };
+            
+            abrirConexaoDh.start();
+        }
+        else if (!dh.chaveDeSessaoEstabelecida())
+            System.out.println("Chave Sessao previamente estabelecida");
     }//GEN-LAST:event_botaoAbrirConexaoActionPerformed
 
     private void radioECBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioECBActionPerformed
@@ -621,13 +631,27 @@ public class ChatBox extends javax.swing.JFrame {
 
     private void botaoGerarPrimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoGerarPrimoActionPerformed
         // TODO add your handling code here:
-        int pontoPartida = Integer.parseInt(this.textFieldPontoPartida.getText());
-        int primo = this.dh.geraPrimo(pontoPartida);
-        List<BigInteger> raizesPrimitivas = this.dh.geraRaizesPrimitivaNrPrimo();
-        Collections.sort(raizesPrimitivas);
-        this.textFieldPrimoGerado.setText(String.valueOf(primo));
-        for (var i : raizesPrimitivas){
-            this.textAreaRaizes.append(i + " ");
+        if (!dh.chaveDeSessaoEstabelecida()){
+            int pontoPartida = Integer.parseInt(this.textFieldPontoPartida.getText());
+            int primo = this.dh.geraPrimo(pontoPartida);
+            List<BigInteger> raizesPrimitivas = this.dh.geraRaizesPrimitivaNrPrimo();
+            Collections.sort(raizesPrimitivas);
+            this.textFieldPrimoGerado.setText(String.valueOf(primo));
+            for (var i : raizesPrimitivas){
+                this.textAreaRaizes.append(i + " ");
+            }
+        }
+        else{
+            this.textFieldChaveSessao.setText(Integer.toString(dh.getChaveSessao()));
+            this.textFieldChaveSessao.setEditable(false);
+            this.textFieldPontoPartida.setText("");
+            this.textFieldPontoPartida.setEditable(false);
+            this.textFieldRaizSelecionada.setText(Integer.toString(dh.getAlfa()));
+            this.textFieldRaizSelecionada.setEditable(false);
+            this.textFieldChavePriv.setText(Integer.toString(dh.getChavePriv()));
+            this.textFieldChavePriv.setEditable(false);
+            this.textAreaRaizes.setText("");
+            this.textAreaRaizes.setEditable(false);
         }
     }//GEN-LAST:event_botaoGerarPrimoActionPerformed
 
@@ -637,11 +661,25 @@ public class ChatBox extends javax.swing.JFrame {
 
     private void botaoGerarChavePubDHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoGerarChavePubDHActionPerformed
         // TODO add your handling code here:
-        int raizSelecionada = Integer.parseInt(this.textFieldRaizSelecionada.getText());
-        this.dh.setAlfa(raizSelecionada);
-        this.dh.setChavePriv(Integer.parseInt(this.textFieldChavePriv.getText()));
-        int chavePub = this.dh.geraChavePublicaLocal();
-        this.textFieldChavePub.setText(Integer.toString(chavePub));
+        if (!dh.chaveDeSessaoEstabelecida()){
+            int raizSelecionada = Integer.parseInt(this.textFieldRaizSelecionada.getText());
+            this.dh.setAlfa(raizSelecionada);
+            this.dh.setChavePriv(Integer.parseInt(this.textFieldChavePriv.getText()));
+            int chavePub = this.dh.geraChavePublicaLocal();
+            this.textFieldChavePub.setText(Integer.toString(chavePub));
+        }
+        else{
+            this.textFieldChaveSessao.setText(Integer.toString(dh.getChaveSessao()));
+            this.textFieldChaveSessao.setEditable(false);
+            this.textFieldPontoPartida.setText("");
+            this.textFieldPontoPartida.setEditable(false);
+            this.textFieldRaizSelecionada.setText(Integer.toString(dh.getAlfa()));
+            this.textFieldRaizSelecionada.setEditable(false);
+            this.textFieldChavePriv.setText(Integer.toString(dh.getChavePriv()));
+            this.textFieldChavePriv.setEditable(false);
+            this.textAreaRaizes.setText("");
+            this.textAreaRaizes.setEditable(false);
+        }
     }//GEN-LAST:event_botaoGerarChavePubDHActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

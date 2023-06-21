@@ -42,13 +42,14 @@ public class Chat {
             posFinal = Math.abs(intPos - (intPos-870));
         }
 		
+        nomeUsuario = "Alice";
         ChatBox chat;
         chat = new ChatBox(nomeUsuario, portaFinal);
         chat.setLocation(posFinal, 0);
         chat.setVisible(true);
         
         ChatBox chatTeste;
-        chatTeste = new ChatBox("Usuario de teste", 3002);
+        chatTeste = new ChatBox("Bob", 3002);
         chatTeste.setLocation(800, 0);
         chatTeste.setVisible(true);
     }
