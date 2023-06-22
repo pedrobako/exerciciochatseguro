@@ -2,5 +2,9 @@
 
 PS1='$'
 clear
-cd target/classes
+cd exerciciochatseguro/target/classes
 java aprendendo/exerciciochatseguro/Chat B
+cd ..
+cd ..
+cd ..
+clear
