@@ -1,4 +1,8 @@
 prompt \
 cls
-cd target\classes
+cd exerciciochatseguro\target\classes
 java aprendendo/exerciciochatseguro/Chat C
+cd ..
+cd ..
+cd ..
+cls
