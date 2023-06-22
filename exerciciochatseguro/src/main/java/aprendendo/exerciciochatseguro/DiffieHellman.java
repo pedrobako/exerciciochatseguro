@@ -89,14 +89,6 @@ public class DiffieHellman {
         }
         
     }
-
-    public void setChavePriv(int chavePriv) {
-        this.chavePriv = chavePriv;
-    }
-
-    public void setChavePubLocal(int chavePub) {
-        this.chavePubLocal = chavePub;
-    }
     
     public void setChavePublicaRemota(int chavePub){
         this.chavePublicaRemota = chavePub;
@@ -109,33 +101,16 @@ public class DiffieHellman {
         BigInteger bigChaveSessao = (bigChavePubRemota.pow(this.chavePriv)).mod(bigPrimo);
         this.chaveSessao = bigChaveSessao.intValue();
     }
-
-    public void setAlfa(int alfa) {
-        this.alfa = alfa;
-    }
-
-    public void setPrimo(int primo) {
-        this.primo = primo;
-    }
-
-    public int getAlfa() {
-        return alfa;
-    }
-
-    public int getPrimo() {
-        return primo;
-    }
-
-    public int getChavePriv() {
-        return chavePriv;
-    }
-
-    public int getChavePubLocal() {
-        return chavePubLocal;
-    }
-
-    public int getChaveSessao() {
-        return chaveSessao;
+    
+    public String getChaveSessaoBinaria(){
+        String binario = Integer.toBinaryString(this.chaveSessao);
+        while (binario.length() < 10){
+            binario = '0' + binario.substring(0);
+        }
+        if (binario.length() > 10){
+            binario = binario.substring(0, 9);
+        }
+        return binario;
     }
     
     public int geraChavePublicaLocal(){
@@ -226,5 +201,41 @@ public class DiffieHellman {
             }
         }
         return retorno;
+    }
+
+    public void setChavePriv(int chavePriv) {
+        this.chavePriv = chavePriv;
+    }
+
+    public void setChavePubLocal(int chavePub) {
+        this.chavePubLocal = chavePub;
+    }
+    
+    public void setAlfa(int alfa) {
+        this.alfa = alfa;
+    }
+
+    public void setPrimo(int primo) {
+        this.primo = primo;
+    }
+
+    public int getAlfa() {
+        return alfa;
+    }
+
+    public int getPrimo() {
+        return primo;
+    }
+
+    public int getChavePriv() {
+        return chavePriv;
+    }
+
+    public int getChavePubLocal() {
+        return chavePubLocal;
+    }
+
+    public int getChaveSessao() {
+        return chaveSessao;
     }
 }

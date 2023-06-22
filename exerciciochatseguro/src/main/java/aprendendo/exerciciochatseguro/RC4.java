@@ -1,10 +1,9 @@
 package aprendendo.exerciciochatseguro;
-import java.util.Arrays;
 import java.util.Base64;
 
 public class RC4 implements Cripto {
     
-    private int KEY_SIZE;
+    private final int KEY_SIZE;
     private byte[] chave;
 
     public RC4(String chave) {

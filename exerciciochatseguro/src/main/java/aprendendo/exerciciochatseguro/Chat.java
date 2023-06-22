@@ -1,7 +1,5 @@
 package aprendendo.exerciciochatseguro;
 import java.net.UnknownHostException;
-import java.util.*;
-import java.math.*;
 
 
 public class Chat {
