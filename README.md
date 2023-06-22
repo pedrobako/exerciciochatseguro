@@ -21,7 +21,8 @@ Como usar o programa:
    
    d. UNomeDoUsuario -> Renomeie o arquivo substituindo "NomeDoUsuario" pelo nome desejado, mas mantenha a letra "U" no nome do arquivo
    
-5. Já com o programa em execução:
+4. Já com o programa em execução:
+   
    a. Em um dos usuários clique em "Abrir Conexão"
    
    b. No outro usuário defina o IP e a porta para conexão ao usuário remoto
