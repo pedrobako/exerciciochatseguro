@@ -19,7 +19,7 @@ Como usar o programa:
    
    c. Bob -> Para executar apenas o usuário Bob para troca de mensagens com outro usuário em outra máquina
    
-   d. UNomeDoUsuario -> Renomeie o arquivo substituindo "NomeDoUsuario" pelo nome desejado, mas mantenha a letra "U" no nome do arquivo
+   d. UNomeDoUsuario -> Renomeie o arquivo substituindo "NomeDoUsuario" pelo nome desejado, mas mantenha a letra "U" no nome do arquivo e o execute para um usuário com um nome especificado
    
 4. Já com o programa em execução:
    
@@ -43,4 +43,4 @@ Como usar o programa:
    
    i. Poderá ser modificado o algoritmo de criptografia a ser utilizado, selecionando os radiobuttons SDES ou RC4
    
-   j. Também poderá ser modificado o modo de operação a ser utilizado, selecionando os radiobuttons ECB ou CBC
+   j. Também poderá ser modificado o modo de operação de cifras a ser utilizado, selecionando os radiobuttons ECB ou CBC
